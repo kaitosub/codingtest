@@ -2,7 +2,7 @@ package router
 
 import (
 	"github.com/gorilla/mux"
-	"github.com/mfkessai/codetest-docker/app/interface/controller"
+	"github.com/kaitosub/codingtest/app/interface/controller"
 )
 
 func SetUp() *mux.Router {

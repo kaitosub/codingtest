@@ -1,8 +1,17 @@
-FROM golang:1.13
-WORKDIR /app
-COPY go.mod ./
+FROM golang:1.17-alpine
 
-COPY *.go ./
-COPY main.go .
 
-CMD go build && go run main.go
+
+ADD . /go/src/app
+
+RUN apk update && apk add git
+
+#RUN mkdir/go/src/app
+
+WORKDIR /go/src/app
+
+#COPY /app /go/src/app
+RUN go install github.com/cosmtrek/air@v1.27.3
+#    go install github.com/go-delve/delve/cmd/dlv@latest
+
+CMD "sh" "-c" "go mod tidy && air -c .air.toml"

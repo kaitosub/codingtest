@@ -1,10 +1,8 @@
 package main
 
 import (
-	//"./infrastructure/mysql"
-	"github.com/kaitosub/app/infrastructure/mysql"
-	"github.com/kaitosub/app/infrastructure/router"
-	//"./infrastructure/router"
+	"github.com/kaitosub/codingtest/app/infrastructure/mysql"
+	"github.com/kaitosub/codingtest/app/infrastructure/router"
 
 	"net/http"
 )

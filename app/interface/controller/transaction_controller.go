@@ -2,11 +2,11 @@ package controller
 
 import (
 	"encoding/json"
-	"github.com/mfkessai/codetest-docker/app/entity/model"
-	"github.com/mfkessai/codetest-docker/app/infrastructure/mysql"
-	"github.com/mfkessai/codetest-docker/app/interface/database"
-	"github.com/mfkessai/codetest-docker/app/usecase"
-	"github.com/mfkessai/codetest-docker/app/util/ctx"
+	"github.com/kaitosub/codingtest/app/entity/model"
+	"github.com/kaitosub/codingtest/app/infrastructure/mysql"
+	"github.com/kaitosub/codingtest/app/interface/database"
+	"github.com/kaitosub/codingtest/app/usecase"
+	"github.com/kaitosub/codingtest/app/util/ctx"
 	"log"
 	"net/http"
 	"strconv"

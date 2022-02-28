@@ -8,11 +8,19 @@ services:
     volumes:
       - ./db:/docker-entrypoint-initdb.d
     ports:
-      - 3306:3306
+      - "3306:3306"
     hostname: db
 
   app:
     build:
-      context: app
+      context: ./app
     ports:
-      - 8888:8888
+      - "8888:8888"
+      - "2345:2345"
+    tty: true
+    volumes:
+      - ./app:/go/src/app
+    security_opt:
+      - apparmor:unconfined
+    cap_add:
+      - SYS_PTRACE

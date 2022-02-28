@@ -2,9 +2,9 @@ package usecase
 
 import (
 	"context"
-	"github.com/mfkessai/codetest-docker/app/entity/model"
-	"github.com/mfkessai/codetest-docker/app/interface/database"
-	"github.com/mfkessai/codetest-docker/app/util/ctx"
+	"github.com/kaitosub/codingtest/app/entity/model"
+	"github.com/kaitosub/codingtest/app/interface/database"
+	"github.com/kaitosub/codingtest/app/util/ctx"
 )
 
 type TransactionInteractor struct {

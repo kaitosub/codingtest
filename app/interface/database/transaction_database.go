@@ -1,8 +1,8 @@
 package database
 
 import (
-	"github.com/mfkessai/codetest-docker/app/entity/model"
-	"github.com/mfkessai/codetest-docker/app/util/ctx"
+	"github.com/kaitosub/codingtest/app/entity/model"
+	"github.com/kaitosub/codingtest/app/util/ctx"
 )
 
 var amountLimit = 1000
