@@ -4,7 +4,7 @@ FROM golang:1.17-alpine
 
 ADD . /go/src/app
 
-RUN apk update && apk add git
+RUN apk update && apk add --no-cache git jq bash gcc musl-dev build-base alpine-sdk build-base
 
 #RUN mkdir/go/src/app
 
