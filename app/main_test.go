@@ -45,7 +45,7 @@ func TestCreate(t *testing.T) {
 		go func() {
 			defer wg.Done()
 			for j := 0; j < 3; j++ {
-				req, row, err := request(uID, t)
+				req, row, err := request(uID)
 				if err != nil {
 					t.Error(err)
 					return
@@ -91,7 +91,7 @@ func TestCreate(t *testing.T) {
 	}
 }
 
-func request(uID int, t *testing.T) (*http.Request, int, error) {
+func request(uID int) (*http.Request, int, error) {
 	buffer := bytes.NewBuffer(make([]byte, 0, 128))
 	if err := json.NewEncoder(buffer).Encode(Transaction{
 		UserID:      uID,

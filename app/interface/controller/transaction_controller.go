@@ -27,7 +27,6 @@ type TransactionControllerInterface interface {
 var amountLimit = 1000
 
 func (tr *TransactionController) GetTransactions(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
 	body := make([]byte, r.ContentLength)
 	r.Body.Read(body)
 	var transactionRequest model.Transaction
