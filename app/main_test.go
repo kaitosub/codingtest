@@ -52,7 +52,7 @@ func TestCreate(t *testing.T) {
 				}
 				resp, err := http.DefaultClient.Do(req)
 				if err != nil {
-					t.Error(err)
+					t.Error(req, resp, err)
 					return
 				}
 
