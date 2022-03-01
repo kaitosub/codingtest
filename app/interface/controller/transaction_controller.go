@@ -39,7 +39,7 @@ func (tr *TransactionController) GetTransactions(w http.ResponseWriter, r *http.
 		return
 	}
 
-	transanction := model.Transaction{UserId: ctxUser.ID, Amount: transactionRequest.Amount, Description: transactionRequest.Description}
+	transaction := model.Transaction{UserId: ctxUser.ID, Amount: transactionRequest.Amount, Description: transactionRequest.Description}
 
 	var amount int
 	if err := mysql.DB.QueryRow(
@@ -52,25 +52,25 @@ func (tr *TransactionController) GetTransactions(w http.ResponseWriter, r *http.
 		log.Printf("amount %d over the amountLimit %d", amount, amountLimit)
 	}
 
-	if amount+transanction.Amount > amountLimit {
+	if amount+transaction.Amount > amountLimit {
 		log.Print("error")
 		return
-	} else {
-		id, err := InsertTransaction(transanction)
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
-
-		//err = json.NewEncoder(w).Encode(transactions)
-		if err != nil {
-			//logger.ErrDump(err, r)
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
-		w.Header().Set("Location", r.Host+r.URL.Path+strconv.Itoa(id))
-		w.WriteHeader(201)
 	}
+
+	id, err := InsertTransaction(transaction)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	err = json.NewEncoder(w).Encode(transaction)
+	if err != nil {
+		//logger.ErrDump(err, r)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Location", r.Host+r.URL.Path+strconv.Itoa(id))
+	w.WriteHeader(201)
 }
 
 func InsertTransaction(transaction model.Transaction) (id int, err error) {
