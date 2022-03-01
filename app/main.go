@@ -10,7 +10,7 @@ import (
 func main() {
 	mysql.Connect()
 	muxRouter := router.SetUp()
-	err := http.ListenAndServe(":8080", muxRouter)
+	err := http.ListenAndServe(":8888", muxRouter)
 	if err != nil {
 		panic(err)
 	}
