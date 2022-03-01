@@ -45,7 +45,7 @@ func TestCreate(t *testing.T) {
 		go func() {
 			defer wg.Done()
 			for j := 0; j < 3; j++ {
-				req, err := request(uID)
+				req, err := request(uID, t)
 				if err != nil {
 					t.Error(err)
 					return
@@ -90,13 +90,14 @@ func TestCreate(t *testing.T) {
 	}
 }
 
-func request(uID int) (*http.Request, error) {
+func request(uID int, t *testing.T) (*http.Request, error) {
 	buffer := bytes.NewBuffer(make([]byte, 0, 128))
 	if err := json.NewEncoder(buffer).Encode(Transaction{
 		UserID:      uID,
 		Amount:      100,
 		Description: fmt.Sprintf("商品%d", uID),
 	}); err != nil {
+		t.Errorf("100 %s", err)
 		return nil, err
 	}
 	req, err := http.NewRequest(
@@ -105,6 +106,7 @@ func request(uID int) (*http.Request, error) {
 		buffer,
 	)
 	if err != nil {
+		t.Errorf("109 %s", err)
 		return nil, err
 	}
 	req.Header.Set("Content-Type", "application/json")

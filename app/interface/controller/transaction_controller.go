@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"encoding/json"
 	"github.com/kaitosub/codingtest/app/entity/model"
 	"github.com/kaitosub/codingtest/app/infrastructure/mysql"
 	"github.com/kaitosub/codingtest/app/interface/database"
@@ -26,11 +27,11 @@ type TransactionControllerInterface interface {
 var amountLimit = 1000
 
 func (tr *TransactionController) GetTransactions(w http.ResponseWriter, r *http.Request) {
-	//w.Header().Set("Content-Type", "application/json")
-	//body := make([]byte, r.ContentLength)
-	//r.Body.Read(body)
+	w.Header().Set("Content-Type", "application/json")
+	body := make([]byte, r.ContentLength)
+	r.Body.Read(body)
 	var transactionRequest model.Transaction
-	//json.Unmarshal(r.Context(), &transactionRequest)
+	json.Unmarshal(body, &transactionRequest)
 
 	ctxUser, err := ctx.GetCtxUser(r.Context())
 	if err != nil {
