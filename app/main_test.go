@@ -45,13 +45,14 @@ func TestCreate(t *testing.T) {
 		go func() {
 			defer wg.Done()
 			for j := 0; j < 3; j++ {
-				req, err := request(uID, t)
+				req, row, err := request(uID, t)
 				if err != nil {
 					t.Error(err)
 					return
 				}
 				resp, err := http.DefaultClient.Do(req)
 				if err != nil {
+					t.Error("row: %i", row)
 					t.Error(req, resp, err)
 					return
 				}
@@ -90,15 +91,14 @@ func TestCreate(t *testing.T) {
 	}
 }
 
-func request(uID int, t *testing.T) (*http.Request, error) {
+func request(uID int, t *testing.T) (*http.Request, int, error) {
 	buffer := bytes.NewBuffer(make([]byte, 0, 128))
 	if err := json.NewEncoder(buffer).Encode(Transaction{
 		UserID:      uID,
 		Amount:      100,
 		Description: fmt.Sprintf("商品%d", uID),
 	}); err != nil {
-		t.Errorf("100 %s", err)
-		return nil, err
+		return nil, 100, err
 	}
 	req, err := http.NewRequest(
 		http.MethodPost,
@@ -106,10 +106,9 @@ func request(uID int, t *testing.T) (*http.Request, error) {
 		buffer,
 	)
 	if err != nil {
-		t.Errorf("109 %s", err)
-		return nil, err
+		return nil, 109, err
 	}
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("apikey", fmt.Sprintf("secure-api-key-%d", uID))
-	return req, nil
+	return req, 113, nil
 }
