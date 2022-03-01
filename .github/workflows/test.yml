@@ -14,6 +14,11 @@ jobs:
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: 1
           options: --health-cmd "mysqladmin ping -h localhost" --health-interval 20s --health-timeout 10s --health-retries 10
+        options: >-
+          --health-cmd "mysqladmin ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - uses: actions/checkout@v2
