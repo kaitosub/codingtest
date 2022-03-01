@@ -40,21 +40,21 @@ func (tr *TransactionController) GetTransactions(w http.ResponseWriter, r *http.
 
 	transaction := model.Transaction{UserId: ctxUser.ID, Amount: transactionRequest.Amount, Description: transactionRequest.Description}
 
-	var amount int
-	if err := mysql.DB.QueryRow(
-		"select sum(amount) from transactions where user_id=?",
-		ctxUser.ID,
-	).Scan(&amount); err != nil {
-		log.Fatal(err)
-	}
-	if amount > amountLimit {
-		log.Printf("amount %d over the amountLimit %d", amount, amountLimit)
-	}
-
-	if amount+transaction.Amount > amountLimit {
-		log.Print("error")
-		return
-	}
+	//var amount int
+	//if err := mysql.DB.QueryRow(
+	//	"select sum(amount) from transactions where user_id=?",
+	//	ctxUser.ID,
+	//).Scan(&amount); err != nil {
+	//	log.Fatal(err)
+	//}
+	//if amount > amountLimit {
+	//	log.Printf("amount %d over the amountLimit %d", amount, amountLimit)
+	//}
+	//
+	//if amount+transaction.Amount > amountLimit {
+	//	log.Print("error")
+	//	return
+	//}
 
 	id, err := InsertTransaction(transaction)
 	if err != nil {
