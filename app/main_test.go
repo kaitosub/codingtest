@@ -52,6 +52,8 @@ func TestCreate(t *testing.T) {
 				}
 				resp, err := http.DefaultClient.Do(req)
 				if err != nil {
+					t.Error(req)
+					t.Error(resp)
 					t.Error("row: %i", row)
 					t.Error(err)
 					return
