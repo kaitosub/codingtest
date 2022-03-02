@@ -45,7 +45,6 @@ func TestCreate(t *testing.T) {
 		go func() {
 			defer wg.Done()
 			for j := 0; j < 3; j++ {
-				println(uID)
 				req, row, err := request(uID)
 				if err != nil {
 					t.Error(err)

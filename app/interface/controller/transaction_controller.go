@@ -34,7 +34,7 @@ func (tr *TransactionController) GetTransactions(w http.ResponseWriter, r *http.
 
 	ctxUser, err := ctx.GetCtxUser(r.Context())
 	if err != nil {
-		log.Println(err)
+		log.Fatalln("38:", err)
 		return
 	}
 
@@ -59,13 +59,14 @@ func (tr *TransactionController) GetTransactions(w http.ResponseWriter, r *http.
 	id, err := InsertTransaction(transaction)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
+		log.Fatalln("61:", err)
 		return
 	}
 
 	err = json.NewEncoder(w).Encode(transaction)
 	if err != nil {
-		//logger.ErrDump(err, r)
 		w.WriteHeader(http.StatusInternalServerError)
+		log.Fatalln(err, r)
 		return
 	}
 	w.Header().Set("Location", r.Host+r.URL.Path+strconv.Itoa(id))
