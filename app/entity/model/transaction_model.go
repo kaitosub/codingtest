@@ -1,7 +1,7 @@
 package model
 
 type Transaction struct {
-	//ID          int    `json:"id"`
+	ID          int    `json:"id"`
 	UserId      int    `json:"userId"`
 	Amount      int    `json:"amount"`
 	Description string `json:"description"`
