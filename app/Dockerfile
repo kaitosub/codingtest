@@ -12,6 +12,6 @@ WORKDIR /go/src/app
 
 #COPY /app /go/src/app
 RUN go install github.com/cosmtrek/air@v1.27.3
-#    go install github.com/go-delve/delve/cmd/dlv@latest
+RUN go install github.com/go-delve/delve/cmd/dlv@latest
 
 CMD "sh" "-c" "go mod tidy && air -c .air.toml"
