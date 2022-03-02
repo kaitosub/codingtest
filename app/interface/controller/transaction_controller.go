@@ -30,17 +30,19 @@ func (tr *TransactionController) GetTransactions(w http.ResponseWriter, r *http.
 	body := make([]byte, r.ContentLength)
 	_, err := r.Body.Read(body)
 	if err != nil {
+		log.Fatalln("33:", err)
 		return
 	}
 	var transactionRequest model.Transaction
 	err = json.Unmarshal(body, &transactionRequest)
 	if err != nil {
+		log.Fatalln("39:", err)
 		return
 	}
 
 	ctxUser, err := ctx.GetCtxUser(r.Context())
 	if err != nil {
-		log.Fatalln("38:", err)
+		log.Fatalln("45:", err)
 		return
 	}
 
@@ -72,7 +74,7 @@ func (tr *TransactionController) GetTransactions(w http.ResponseWriter, r *http.
 	err = json.NewEncoder(w).Encode(transaction)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		log.Fatalln(err, r)
+		log.Fatalln("77:", err, r)
 		return
 	}
 	w.Header().Set("Location", r.Host+r.URL.Path+strconv.Itoa(id))
