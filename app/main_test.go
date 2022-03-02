@@ -45,16 +45,15 @@ func TestCreate(t *testing.T) {
 		go func() {
 			defer wg.Done()
 			for j := 0; j < 3; j++ {
-				req, row, err := request(uID)
+				req, err := request(uID)
 				if err != nil {
 					t.Error(err)
 					return
 				}
 				resp, err := http.DefaultClient.Do(req)
 				if err != nil {
-					t.Error(req)
-					t.Error(resp)
-					t.Error("row: %i", row)
+					t.Error("req:", req)
+					t.Error("resp:", resp)
 					t.Error(err)
 					return
 				}
@@ -93,14 +92,14 @@ func TestCreate(t *testing.T) {
 	}
 }
 
-func request(uID int) (*http.Request, int, error) {
+func request(uID int) (*http.Request, error) {
 	buffer := bytes.NewBuffer(make([]byte, 0, 128))
 	if err := json.NewEncoder(buffer).Encode(Transaction{
 		UserID:      uID,
 		Amount:      100,
 		Description: fmt.Sprintf("商品%d", uID),
 	}); err != nil {
-		return nil, 100, err
+		return nil, err
 	}
 	req, err := http.NewRequest(
 		http.MethodPost,
@@ -108,9 +107,9 @@ func request(uID int) (*http.Request, int, error) {
 		buffer,
 	)
 	if err != nil {
-		return nil, 109, err
+		return nil, err
 	}
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("apikey", fmt.Sprintf("secure-api-key-%d", uID))
-	return req, 113, nil
+	return req, nil
 }
