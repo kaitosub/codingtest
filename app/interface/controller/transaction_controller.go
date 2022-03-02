@@ -28,9 +28,15 @@ var amountLimit = 1000
 
 func (tr *TransactionController) GetTransactions(w http.ResponseWriter, r *http.Request) {
 	body := make([]byte, r.ContentLength)
-	r.Body.Read(body)
+	_, err := r.Body.Read(body)
+	if err != nil {
+		return
+	}
 	var transactionRequest model.Transaction
-	json.Unmarshal(body, &transactionRequest)
+	err = json.Unmarshal(body, &transactionRequest)
+	if err != nil {
+		return
+	}
 
 	ctxUser, err := ctx.GetCtxUser(r.Context())
 	if err != nil {
