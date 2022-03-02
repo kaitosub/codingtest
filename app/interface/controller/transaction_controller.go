@@ -6,6 +6,8 @@ import (
 	"github.com/kaitosub/codingtest/app/infrastructure/mysql"
 	"github.com/kaitosub/codingtest/app/interface/database"
 	"github.com/kaitosub/codingtest/app/usecase"
+	"io"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"strconv"
@@ -70,6 +72,18 @@ func (tr *TransactionController) GetTransactions(w http.ResponseWriter, r *http.
 		log.Fatalln("77:", err, r)
 		return
 	}
+
+	_, err = ioutil.ReadAll(r.Body)
+	if err != nil {
+		return
+	}
+
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+
+		}
+	}(r.Body)
 	w.Header().Set("Location", r.Host+r.URL.Path+strconv.Itoa(id))
 	w.WriteHeader(201)
 }
