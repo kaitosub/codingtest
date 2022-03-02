@@ -75,6 +75,6 @@ func (tr *TransactionController) GetTransactions(w http.ResponseWriter, r *http.
 }
 
 func InsertTransaction(transaction model.TransactionEntity) (id int, err error) {
-	_, err = mysql.DB.Exec("INSERT INTO transaction (user_id, amount, description) VALUES (?, ?, ?)", transaction.UserID, transaction.Amount, transaction.Description)
+	_, err = mysql.DB.Exec("INSERT INTO transactions (user_id, amount, description) VALUES (?, ?, ?)", transaction.UserID, transaction.Amount, transaction.Description)
 	return id, err
 }
