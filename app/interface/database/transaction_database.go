@@ -2,7 +2,6 @@ package database
 
 import (
 	"github.com/kaitosub/codingtest/app/entity/model"
-	"github.com/kaitosub/codingtest/app/util/ctx"
 )
 
 var amountLimit = 1000
@@ -10,10 +9,10 @@ var amountLimit = 1000
 type TransactionRepository struct{}
 
 type TransactionRepositoryInterface interface {
-	FindTransactions(*ctx.CtxUser) []model.Transaction
+	PostTransaction() []model.Transaction
 }
 
-func (tr *TransactionRepository) FindTransactions(ctxUser *ctx.CtxUser) []model.Transaction {
+func (tr *TransactionRepository) PostTransaction() []model.Transaction {
 
 	var transactions []model.Transaction
 	//var transactionAmountSum []model.TransactionAmountSum

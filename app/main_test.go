@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"sync"
 	"testing"
@@ -45,16 +44,17 @@ func TestCreate(t *testing.T) {
 		go func() {
 			defer wg.Done()
 			for j := 0; j < 3; j++ {
-				req, err := request(uID)
-				if err != nil {
+				req, err := request(uID, t)
+				if err != "114" {
 					t.Error(err)
 					return
 				}
-				resp, err := http.DefaultClient.Do(req)
-				if err != nil {
-					t.Error("req:", req)
-					t.Error("resp:", resp)
-					t.Error(err)
+
+				t.Error("req.body", req.Body)
+				resp, e := http.DefaultClient.Do(req)
+				if e != nil {
+					t.Error("req.header:", req)
+					t.Error("err:", e)
 					return
 				}
 
@@ -63,12 +63,12 @@ func TestCreate(t *testing.T) {
 					t.Errorf("POST /transactions status %d", resp.StatusCode)
 				}
 
-				body, err := ioutil.ReadAll(resp.Body)
-				if err != nil {
-					t.Error(err)
-					return
-				}
-				t.Log(string(body))
+				//body, err := ioutil.ReadAll(resp.Body)
+				//if err != nil {
+				//	t.Error(err)
+				//	return
+				//}
+				//t.Log(string(body))
 
 				if err := resp.Body.Close(); err != nil {
 					t.Error(err)
@@ -76,6 +76,7 @@ func TestCreate(t *testing.T) {
 				}
 			}
 		}()
+		//ho
 	}
 	wg.Wait()
 
@@ -92,14 +93,15 @@ func TestCreate(t *testing.T) {
 	}
 }
 
-func request(uID int) (*http.Request, error) {
+func request(uID int, t *testing.T) (*http.Request, string) {
 	buffer := bytes.NewBuffer(make([]byte, 0, 128))
 	if err := json.NewEncoder(buffer).Encode(Transaction{
 		UserID:      uID,
 		Amount:      100,
 		Description: fmt.Sprintf("商品%d", uID),
 	}); err != nil {
-		return nil, err
+		hoge := "101"
+		return nil, hoge
 	}
 	req, err := http.NewRequest(
 		http.MethodPost,
@@ -107,9 +109,9 @@ func request(uID int) (*http.Request, error) {
 		buffer,
 	)
 	if err != nil {
-		return nil, err
+		return nil, "110"
 	}
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("apikey", fmt.Sprintf("secure-api-key-%d", uID))
-	return req, nil
+	return req, "114"
 }

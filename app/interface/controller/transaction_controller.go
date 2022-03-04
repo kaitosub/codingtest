@@ -4,43 +4,68 @@ import (
 	"encoding/json"
 	"github.com/kaitosub/codingtest/app/entity/model"
 	"github.com/kaitosub/codingtest/app/infrastructure/mysql"
-	"github.com/kaitosub/codingtest/app/interface/database"
 	"github.com/kaitosub/codingtest/app/usecase"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"strconv"
 )
 
-type TransactionController struct {
-	interactor usecase.TransactionInteractorInterface
-}
-
-func NewTransactionController() TransactionControllerInterface {
-	return &TransactionController{interactor: usecase.NewTransactionInteractor(&database.TransactionRepository{})}
+type transactionController struct {
+	tr usecase.TransactionInteractor
 }
 
 type TransactionControllerInterface interface {
-	GetTransactions(w http.ResponseWriter, r *http.Request)
+	PostTransaction(w http.ResponseWriter, r *http.Request)
+}
+
+func NewTransactionController(tr usecase.TransactionInteractorInterface) TransactionControllerInterface {
+	return &transactionController{}
 }
 
 var amountLimit = 1000
 
-func (tr *TransactionController) GetTransactions(w http.ResponseWriter, r *http.Request) {
+func (tr *transactionController) PostTransaction(w http.ResponseWriter, r *http.Request) {
+	// リクエストbodyのJSONをDTOにマッピング
 	body := make([]byte, r.ContentLength)
-	_, err := r.Body.Read(body)
-	if err != nil {
-		log.Fatalln("33:", err)
-		return
-	}
+	r.Body.Read(body)
 	var transactionRequest model.TransactionRequest
-	err = json.Unmarshal(body, &transactionRequest)
+	json.Unmarshal(body, &transactionRequest)
+
+	// DTOをTODOのEntityに変換
+	transaction := model.TransactionEntity{
+		UserID:      transactionRequest.UserId,
+		Amount:      transactionRequest.Amount,
+		Description: transactionRequest.Description,
+	}
+
+	// リポジトリの追加処理呼び出し
+	id, err := InsertTransaction(transaction)
 	if err != nil {
-		log.Fatalln("39:", err)
+		w.WriteHeader(500)
 		return
 	}
 
-	transaction := model.TransactionEntity{UserID: transactionRequest.UserId, Amount: transactionRequest.Amount, Description: transactionRequest.Description}
+	// LocationにリソースのPATHを設定し、ステータスコード２０１を返却
+	w.Header().Set("Location", r.Host+r.URL.Path+strconv.Itoa(id))
+	w.WriteHeader(201)
+	//rr := http.Request{Method: "POST", URL: "http://localhost:8888/transactions", Response: nil, HTTP/1.1 1 1 map[Apikey:[secure-api-key-1] Content-Type:[application/json]] {} 0x1391e60 58 [] false localhost:8888 map[] map[] <nil> map[]   <nil> <nil> <nil> 0xc00001a110}
+
+	//body := make([]byte, r.ContentLength)
+	//_, err := r.Body.Read(body)
+	//if err != nil {
+	//	//err = string("err %s", hogehoge)
+	//	//log.Fatalln("33:", err)
+	//	return
+	//}
+	//var transactionRequest model.TransactionRequest
+	//err = json.Unmarshal(body, &transactionRequest)
+	//if err != nil {
+	//	//log.Fatalln("39:", err)
+	//	return
+	//}
+	//
+	//transaction := model.TransactionEntity{UserID: transactionRequest.UserId, Amount: transactionRequest.Amount, Description: transactionRequest.Description}
+	//log.Println(transaction)
 
 	//var amount int
 	//if err := mysql.DB.QueryRow(
@@ -58,24 +83,25 @@ func (tr *TransactionController) GetTransactions(w http.ResponseWriter, r *http.
 	//	return
 	//}
 
-	id, err := InsertTransaction(transaction)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		log.Fatalln("61:", err)
-		return
-	}
-
-	err = json.NewEncoder(w).Encode(transaction)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		log.Fatalln("77:", err, r)
-		return
-	}
-
-	_, err = ioutil.ReadAll(r.Body)
-	if err != nil {
-		return
-	}
+	//ひつよう
+	//id, err := InsertTransaction(transaction)
+	//if err != nil {
+	//	w.WriteHeader(http.StatusInternalServerError)
+	//	log.Fatalln("61:", err)
+	//	return
+	//}
+	//
+	//err = json.NewEncoder(w).Encode(transaction)
+	//if err != nil {
+	//	w.WriteHeader(http.StatusInternalServerError)
+	//	log.Fatalln("77:", err, r)
+	//	return
+	//}
+	//
+	//_, err = ioutil.ReadAll(r.Body)
+	//if err != nil {
+	//	return
+	//}
 
 	//defer func(Body io.ReadCloser) {
 	//	err := Body.Close()
@@ -83,11 +109,21 @@ func (tr *TransactionController) GetTransactions(w http.ResponseWriter, r *http.
 	//
 	//	}
 	//}(r.Body)
-	w.Header().Set("Location", r.Host+r.URL.Path+strconv.Itoa(id))
-	w.WriteHeader(201)
+	//w.Header().Set("Location", r.Host+r.URL.Path+strconv.Itoa(id))
+	//w.WriteHeader(201)
+	//return
 }
 
 func InsertTransaction(transaction model.TransactionEntity) (id int, err error) {
-	_, err = mysql.DB.Exec("INSERT INTO transactions (user_id, amount, description) VALUES (?, ?, ?)", transaction.UserID, transaction.Amount, transaction.Description)
-	return id, err
+	_, err = mysql.DB.Exec(
+		"INSERT INTO transactions (user_id, amount, description) VALUES (?, ?, ?)",
+		transaction.UserID, transaction.Amount, transaction.Description,
+	)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	// created_atが最新のTODOのIDを返却
+	err = mysql.DB.QueryRow("SELECT id FROM transactions ORDER BY id DESC LIMIT 1").Scan(&id)
+	return
 }
