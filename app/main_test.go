@@ -50,19 +50,19 @@ func TestCreate(t *testing.T) {
 					return
 				}
 
-				t.Error("req.body", req.Body)
+				t.Error(req.Body)
 				resp, e := http.DefaultClient.Do(req)
 				if e != nil {
 					t.Error("req.header:", req)
 					t.Error("err:", e)
 					return
 				}
+				t.Error("res", resp)
 
 				// 想定外のレスポンスステータスが返ってきていないかをテスト
 				if resp.StatusCode != http.StatusPaymentRequired && resp.StatusCode != http.StatusCreated {
 					t.Errorf("POST /transactions status %d", resp.StatusCode)
 				}
-
 				//body, err := ioutil.ReadAll(resp.Body)
 				//if err != nil {
 				//	t.Error(err)
@@ -76,7 +76,6 @@ func TestCreate(t *testing.T) {
 				}
 			}
 		}()
-		//ho
 	}
 	wg.Wait()
 

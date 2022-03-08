@@ -9,10 +9,10 @@ var amountLimit = 1000
 type TransactionRepository struct{}
 
 type TransactionRepositoryInterface interface {
-	PostTransaction() []model.Transaction
+	PostTransaction(transaction model.Transaction) ([]model.Transaction, error)
 }
 
-func (tr *TransactionRepository) PostTransaction() []model.Transaction {
+func (tr *TransactionRepository) PostTransaction(transaction model.Transaction) ([]model.Transaction, error) {
 
 	var transactions []model.Transaction
 	//var transactionAmountSum []model.TransactionAmountSum
@@ -46,5 +46,5 @@ func (tr *TransactionRepository) PostTransaction() []model.Transaction {
 	//	return transactions, err
 	//}
 
-	return transactions
+	return transactions, nil
 }

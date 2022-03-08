@@ -34,7 +34,6 @@ jobs:
 
       - name: Set up MySQL
         run: mysql -h 127.0.0.1 -u root < ./db/init.sql
-
       - name: Build app image
         run: docker image build --tag app app
 

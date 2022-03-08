@@ -1,16 +1,23 @@
 package mysql
 
 import (
+	"database/sql"
 	"fmt"
-
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/jmoiron/sqlx"
 )
 
-var DB *sqlx.DB
+var DB *sql.DB
 
 func Connect() {
-	db, err := sqlx.Connect("mysql", "root@tcp(127.0.0.1)/codetest")
+	DBMS := "mysql"
+	//dbInfo := fmt.Sprintf(
+	//	"%s:%s@%s/%s?parseTime=true",
+	//	"go_test",
+	//	"root",
+	//	"tcp@127.0.0.1:3306",
+	//	"go_database",
+	//)
+	db, err := sql.Open(DBMS, "root@tcp(MySQL)/codetest")
 	if err != nil {
 		fmt.Println("error")
 		panic(err)

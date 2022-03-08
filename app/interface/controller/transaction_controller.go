@@ -4,27 +4,31 @@ import (
 	"encoding/json"
 	"github.com/kaitosub/codingtest/app/entity/model"
 	"github.com/kaitosub/codingtest/app/infrastructure/mysql"
+	"github.com/kaitosub/codingtest/app/interface/database"
 	"github.com/kaitosub/codingtest/app/usecase"
 	"log"
 	"net/http"
 	"strconv"
 )
 
-type transactionController struct {
-	tr usecase.TransactionInteractor
+type TransactionController struct {
+	interactor usecase.TransactionInteractorInterface
 }
 
 type TransactionControllerInterface interface {
 	PostTransaction(w http.ResponseWriter, r *http.Request)
 }
 
-func NewTransactionController(tr usecase.TransactionInteractorInterface) TransactionControllerInterface {
-	return &transactionController{}
+func NewTransactionController() TransactionControllerInterface {
+	return &TransactionController{
+		interactor: usecase.NewTransactionInteractor(&database.TransactionRepository{}),
+	}
 }
 
 var amountLimit = 1000
 
-func (tr *transactionController) PostTransaction(w http.ResponseWriter, r *http.Request) {
+func (controller *TransactionController) PostTransaction(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
 	// リクエストbodyのJSONをDTOにマッピング
 	body := make([]byte, r.ContentLength)
 	r.Body.Read(body)
