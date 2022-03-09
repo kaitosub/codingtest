@@ -41,4 +41,4 @@ jobs:
         run: docker container run -d -p 0.0.0.0:8888:8888 app
 
       - name: Test
-        run: go test ./app/main_test.go
+        run: docker-compose run app go test ./app/main_test.go
