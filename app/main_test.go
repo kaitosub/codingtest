@@ -50,14 +50,13 @@ func TestCreate(t *testing.T) {
 					return
 				}
 
-				t.Error(req.Body)
+				req.Close = true
 				resp, e := http.DefaultClient.Do(req)
 				if e != nil {
-					t.Error("req.header:", req)
-					t.Error("err:", e)
+					t.Error(e)
 					return
 				}
-				t.Error("res", resp)
+				defer resp.Body.Close()
 
 				// 想定外のレスポンスステータスが返ってきていないかをテスト
 				if resp.StatusCode != http.StatusPaymentRequired && resp.StatusCode != http.StatusCreated {
