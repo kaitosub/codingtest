@@ -3,16 +3,34 @@ version: "3.8"
 services:
   db:
     image: mysql:5.7
+    command: "--innodb_use_native_aio=0"
+    container_name: MySQL
     environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: go_database
+      MYSQL_USER: go_test
+      MYSQL_PASSWORD: password
       MYSQL_ALLOW_EMPTY_PASSWORD: 1
     volumes:
       - ./db:/docker-entrypoint-initdb.d
     ports:
-      - 3306:3306
+      - "3306:3306"
     hostname: db
 
   app:
     build:
-      context: app
+      context: ./app
+      dockerfile: Dockerfile
     ports:
-      - 8888:8888
+      - "8888:8888"
+      - "2345:2345"
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./app:/go/src/app
+    security_opt:
+      - apparmor:unconfined
+    cap_add:
+      - SYS_PTRACE
+    depends_on:
+      - "db"

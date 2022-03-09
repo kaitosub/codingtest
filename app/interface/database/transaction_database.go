@@ -1,8 +1,7 @@
 package database
 
 import (
-	"github.com/mfkessai/codetest-docker/app/entity/model"
-	"github.com/mfkessai/codetest-docker/app/util/ctx"
+	"github.com/kaitosub/codingtest/app/entity/model"
 )
 
 var amountLimit = 1000
@@ -10,10 +9,10 @@ var amountLimit = 1000
 type TransactionRepository struct{}
 
 type TransactionRepositoryInterface interface {
-	FindTransactions(*ctx.CtxUser) []model.Transaction
+	PostTransaction(transaction model.Transaction) ([]model.Transaction, error)
 }
 
-func (tr *TransactionRepository) FindTransactions(ctxUser *ctx.CtxUser) []model.Transaction {
+func (tr *TransactionRepository) PostTransaction(transaction model.Transaction) ([]model.Transaction, error) {
 
 	var transactions []model.Transaction
 	//var transactionAmountSum []model.TransactionAmountSum
@@ -47,5 +46,5 @@ func (tr *TransactionRepository) FindTransactions(ctxUser *ctx.CtxUser) []model.
 	//	return transactions, err
 	//}
 
-	return transactions
+	return transactions, nil
 }

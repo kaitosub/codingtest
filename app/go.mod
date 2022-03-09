@@ -1,8 +1,8 @@
-module kaitosub/app
-go 1.13
+module github.com/kaitosub/codingtest/app
 
-replace (
-	github.com/kaitosub/app => ../app
-	github.com/kaitosub/app/infrastructure/mysql => ../app/infrastructure/mysql/mysql.go
-	github.com/kaitosub/app/infrastructure/router => ../app/infrastructure/router/router.go
+go 1.17
+
+require (
+	github.com/go-sql-driver/mysql v1.6.0
+	github.com/gorilla/mux v1.8.0
 )

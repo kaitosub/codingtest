@@ -1,31 +1,25 @@
 package usecase
 
 import (
-	"context"
-	"github.com/mfkessai/codetest-docker/app/entity/model"
-	"github.com/mfkessai/codetest-docker/app/interface/database"
-	"github.com/mfkessai/codetest-docker/app/util/ctx"
+	"github.com/kaitosub/codingtest/app/entity/model"
+	"github.com/kaitosub/codingtest/app/interface/database"
 )
 
 type TransactionInteractor struct {
 	repository database.TransactionRepositoryInterface
 }
 
-func NewTransactionInteractor(tr database.TransactionRepositoryInterface) TransactionInteractorInterface {
-	return &TransactionInteractor{repository: tr}
+func NewTransactionInteractor(t database.TransactionRepositoryInterface) TransactionInteractorInterface {
+	return &TransactionInteractor{
+		repository: t,
+	}
 }
 
 type TransactionInteractorInterface interface {
-	FindTransactions(context.Context) ([]model.Transaction, error)
+	PostTransaction(transaction model.Transaction) (t model.Transaction, err error)
 }
 
-func (interactor *TransactionInteractor) FindTransactions(
-	context context.Context) (transactions []model.Transaction, err error) {
-	ctxUser, err := ctx.GetCtxUser(context)
-	if err != nil {
-		return
-	}
-
-	transactions = interactor.repository.FindTransactions(ctxUser)
+func (interactor *TransactionInteractor) PostTransaction(transaction model.Transaction) (transactions model.Transaction, err error) {
+	transactions, _ = interactor.PostTransaction(transaction)
 	return
 }
