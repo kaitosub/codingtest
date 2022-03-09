@@ -17,7 +17,7 @@ func Connect() {
 	//	"tcp@127.0.0.1:3306",
 	//	"go_database",
 	//)
-	db, err := sql.Open(DBMS, "root@tcp(MySQL)/codetest")
+	db, err := sql.Open(DBMS, "root@tcp(127.0.0.1)/codetest")
 	if err != nil {
 		fmt.Println("error")
 		panic(err)
