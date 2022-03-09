@@ -55,6 +55,7 @@ func TestCreate(t *testing.T) {
 					t.Error(e)
 					return
 				}
+				t.Log(resp.StatusCode)
 
 				// 想定外のレスポンスステータスが返ってきていないかをテスト
 				if resp.StatusCode != http.StatusPaymentRequired && resp.StatusCode != http.StatusCreated {
