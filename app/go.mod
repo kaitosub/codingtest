@@ -1,8 +1,5 @@
-module kaitosub/app
+module github.com/kaitosub/codingtest/app
+
 go 1.17
 
-replace (
-	github.com/kaitosub/app => ../app
-	github.com/kaitosub/app/infrastructure/mysql => ../app/infrastructure/mysql/mysql.go
-	github.com/kaitosub/app/infrastructure/router => ../app/infrastructure/router/router.go
-)
+require github.com/go-sql-driver/mysql v1.6.0
