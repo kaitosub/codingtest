@@ -1,8 +1,8 @@
 package main
 
 import (
-	"kaitosub/app/controller"
-	"kaitosub/app/model/repository"
+	"github.com/kaitosub/codingtest/app/controller"
+	"github.com/kaitosub/codingtest/app/model/repository"
 	"net/http"
 )
 

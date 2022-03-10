@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"kaitosub/app/model/entity"
+	"github.com/kaitosub/codingtest/app/model/entity"
 	"log"
 )
 

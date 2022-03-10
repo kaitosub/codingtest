@@ -2,9 +2,9 @@ package controller
 
 import (
 	"encoding/json"
-	"kaitosub/app/controller/dto"
-	"kaitosub/app/model/entity"
-	"kaitosub/app/model/repository"
+	"github.com/kaitosub/codingtest/app/controller/dto"
+	"github.com/kaitosub/codingtest/app/model/entity"
+	"github.com/kaitosub/codingtest/app/model/repository"
 	"net/http"
 	"strconv"
 )

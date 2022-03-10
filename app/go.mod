@@ -1,5 +1,5 @@
 module kaitosub/app
-go 1.13
+go 1.17
 
 replace (
 	github.com/kaitosub/app => ../app
