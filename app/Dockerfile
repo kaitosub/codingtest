@@ -1,8 +1,16 @@
-FROM golang:1.13
-WORKDIR /app
-COPY go.mod ./
+FROM golang:1.17-alpine
+RUN apk update
+WORKDIR /codingtest/app
 
-COPY *.go ./
-COPY main.go .
+COPY . .
 
-CMD go build && go run main.go
+EXPOSE 8888
+
+RUN go build -o app main.go
+
+RUN adduser -S golang
+
+USER golang
+
+ENTRYPOINT [ "./app" ]
+
