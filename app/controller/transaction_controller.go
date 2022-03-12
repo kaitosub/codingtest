@@ -35,7 +35,7 @@ func (tc *transactionController) PostTransaction(w http.ResponseWriter, r *http.
 	// リポジトリの追加処理呼び出し
 	id, err := tc.tr.InsertTransaction(transaction)
 	if err != nil {
-		w.WriteHeader(500)
+		w.WriteHeader(600)
 		return
 	}
 
