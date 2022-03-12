@@ -66,7 +66,7 @@ func TestCreate(t *testing.T) {
 					t.Error(err)
 					return
 				}
-				t.Log(string(body))
+				t.Log(body)
 
 				if err := resp.Body.Close(); err != nil {
 					t.Error(err)
