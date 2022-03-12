@@ -55,18 +55,18 @@ func TestCreate(t *testing.T) {
 					t.Error(err)
 					return
 				}
+				t.Log(resp)
 
 				// 想定外のレスポンスステータスが返ってきていないかをテスト
 				if resp.StatusCode != http.StatusPaymentRequired && resp.StatusCode != http.StatusCreated {
 					t.Errorf("POST /transactions status %d", resp.StatusCode)
 				}
 
-				body, err := ioutil.ReadAll(resp.Body)
+				_, err = ioutil.ReadAll(resp.Body)
 				if err != nil {
 					t.Error(err)
 					return
 				}
-				t.Log(body)
 
 				if err := resp.Body.Close(); err != nil {
 					t.Error(err)
