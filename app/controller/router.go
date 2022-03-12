@@ -17,10 +17,10 @@ func NewRouter(tc TransactionController) Router {
 }
 
 func (ro *router) HandleTransactionsRequest(w http.ResponseWriter, r *http.Request) {
-	switch r.Method {
-	case "POST":
-		ro.tc.PostTransaction(w, r)
-	default:
-		w.WriteHeader(405)
-	}
+	//switch r.Method {
+	//case "POST":
+	ro.tc.PostTransaction(w, r)
+	//default:
+	//	w.WriteHeader(405)
+	//}
 }
