@@ -6,7 +6,6 @@ import (
 	"github.com/kaitosub/codingtest/app/model/entity"
 	"github.com/kaitosub/codingtest/app/model/repository"
 	"net/http"
-	"strconv"
 )
 
 type TransactionController interface {
@@ -33,13 +32,13 @@ func (tc *transactionController) PostTransaction(w http.ResponseWriter, r *http.
 	transaction := entity.TransactionEntity{UserID: transactionRequest.UserID, Amount: transactionRequest.Amount, Description: transactionRequest.Description}
 
 	// リポジトリの追加処理呼び出し
-	id, err := tc.tr.InsertTransaction(transaction)
+	err := tc.tr.InsertTransaction(transaction)
 	if err != nil {
 		w.WriteHeader(600)
 		return
 	}
 
 	// LocationにリソースのPATHを設定し、ステータスコード２０１を返却
-	w.Header().Set("Location", r.Host+r.URL.Path+strconv.Itoa(id))
+	//w.Header().Set("Location", r.Host+r.URL.Path+strconv.Itoa(id))
 	w.WriteHeader(201)
 }
