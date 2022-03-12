@@ -15,6 +15,7 @@ services:
   app:
     build:
       context: ./app
+#      dockerfile: Dockerfile.dev
     ports:
       - 8888:8888
       - "2345:2345"
