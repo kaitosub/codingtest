@@ -1,19 +1,22 @@
 package main
 
 import (
-	//"./infrastructure/mysql"
-	"github.com/kaitosub/app/infrastructure/mysql"
-	"github.com/kaitosub/app/infrastructure/router"
-	//"./infrastructure/router"
-
+	"github.com/kaitosub/codingtest/app/controller"
+	"github.com/kaitosub/codingtest/app/model/repository"
 	"net/http"
 )
 
+var tr = repository.NewTransactionRepository()
+var tc = controller.NewTransactionController(tr)
+var ro = controller.NewRouter(tc)
+
 func main() {
-	mysql.Connect()
-	muxRouter := router.SetUp()
-	err := http.ListenAndServe(":8080", muxRouter)
+	server := http.Server{
+		Addr: ":8888",
+	}
+	http.HandleFunc("/transactions/", ro.HandleTransactionsRequest)
+	err := server.ListenAndServe()
 	if err != nil {
-		panic(err)
+		return
 	}
 }
