@@ -22,12 +22,12 @@ func NewTransactionRepository() TransactionRepository {
 // TODO追加処理
 func (tr *transactionRepository) InsertTransaction(transaction entity.TransactionEntity) (id int, err error) {
 	// 引数で受け取ったEntityの値を元にDBに追加
-	_, err = DB.Exec("INSERT INTO transaction (user_id, amount, description) VALUES (?, ?, ?)", transaction.UserID, transaction.Amount, transaction.Description)
+	_, err = DB.Exec("INSERT INTO transactions (user_id, amount, description) VALUES (?, ?, ?)", transaction.UserID, transaction.Amount, transaction.Description)
 	if err != nil {
 		log.Print(err)
 		return
 	}
 	// created_atが最新のTODOのIDを返却
-	err = DB.QueryRow("SELECT id FROM transaction ORDER BY id DESC LIMIT 1").Scan(&id)
+	err = DB.QueryRow("SELECT id FROM transactions ORDER BY id DESC LIMIT 1").Scan(&id)
 	return
 }
